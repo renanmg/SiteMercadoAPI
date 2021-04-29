@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "G3K83qgRE+s1UiPGlyxKon2TkSY62K/TObRYLpk4n+0R46rLZ5HF2CRS1f4L/2oDL+XLbFEV64gVnZYNPfCyQw==",
+  "success": true,
+  "projectFilePath": "D:\\Educação\\SiteMercado\\SiteMercadoAPI\\SiteMercadoAPI.Domain\\SiteMercadoAPI.Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\marti\\.nuget\\packages\\flunt\\1.0.5\\flunt.1.0.5.nupkg.sha512"
+  ],
+  "logs": []
+}

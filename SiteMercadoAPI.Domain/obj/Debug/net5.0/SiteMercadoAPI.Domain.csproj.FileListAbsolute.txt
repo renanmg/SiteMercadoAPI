@@ -1,0 +1,12 @@
+D:\Educação\SiteMercado\SiteMercadoAPI\SiteMercadoAPI.Domain\bin\Debug\net5.0\SiteMercadoAPI.Domain.deps.json
+D:\Educação\SiteMercado\SiteMercadoAPI\SiteMercadoAPI.Domain\bin\Debug\net5.0\SiteMercadoAPI.Domain.dll
+D:\Educação\SiteMercado\SiteMercadoAPI\SiteMercadoAPI.Domain\bin\Debug\net5.0\ref\SiteMercadoAPI.Domain.dll
+D:\Educação\SiteMercado\SiteMercadoAPI\SiteMercadoAPI.Domain\bin\Debug\net5.0\SiteMercadoAPI.Domain.pdb
+D:\Educação\SiteMercado\SiteMercadoAPI\SiteMercadoAPI.Domain\obj\Debug\net5.0\SiteMercadoAPI.Domain.csprojAssemblyReference.cache
+D:\Educação\SiteMercado\SiteMercadoAPI\SiteMercadoAPI.Domain\obj\Debug\net5.0\SiteMercadoAPI.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Educação\SiteMercado\SiteMercadoAPI\SiteMercadoAPI.Domain\obj\Debug\net5.0\SiteMercadoAPI.Domain.AssemblyInfoInputs.cache
+D:\Educação\SiteMercado\SiteMercadoAPI\SiteMercadoAPI.Domain\obj\Debug\net5.0\SiteMercadoAPI.Domain.AssemblyInfo.cs
+D:\Educação\SiteMercado\SiteMercadoAPI\SiteMercadoAPI.Domain\obj\Debug\net5.0\SiteMercadoAPI.Domain.csproj.CoreCompileInputs.cache
+D:\Educação\SiteMercado\SiteMercadoAPI\SiteMercadoAPI.Domain\obj\Debug\net5.0\SiteMercadoAPI.Domain.dll
+D:\Educação\SiteMercado\SiteMercadoAPI\SiteMercadoAPI.Domain\obj\Debug\net5.0\ref\SiteMercadoAPI.Domain.dll
+D:\Educação\SiteMercado\SiteMercadoAPI\SiteMercadoAPI.Domain\obj\Debug\net5.0\SiteMercadoAPI.Domain.pdb
