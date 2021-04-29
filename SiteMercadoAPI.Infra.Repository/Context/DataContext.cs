@@ -1,3 +1,4 @@
+using Flunt.Notifications;
 using Microsoft.EntityFrameworkCore;
 using SiteMercadoAPI.Domain.Entities;
 using SiteMercadoAPI.Infra.Repository.Maps;
@@ -15,6 +16,7 @@ namespace SiteMercadoAPI.Infra.Repository.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Ignore<Notification>();
             builder.ApplyConfiguration(new ProdutoMap());
         }
     }
