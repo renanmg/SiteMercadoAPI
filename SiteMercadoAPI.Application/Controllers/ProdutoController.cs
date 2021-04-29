@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using ProductCatalog.ViewModels;
 using SiteMercadoAPI.Application.Models;
+using SiteMercadoAPI.Domain.Entities;
 using SiteMercadoAPI.Domain.Interfaces;
 
 namespace SiteMercadoAPI.Application.Controllers
@@ -17,92 +19,113 @@ namespace SiteMercadoAPI.Application.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ProdutoModel>>> Get([FromServices] IProdutoRepository repository, [FromServices] IMapper mapper)
         {
-            //return await repository.Get();
-            //return mapper.Map<List<ProdutoModel>>(await repository.Get());
-            return new List<ProdutoModel>();
+
+            return mapper.Map<List<ProdutoModel>>(await repository.Get());
         }
 
-        // [HttpGet]
-        // [Route("{id:int}")]
-        // public async Task<ActionResult<Product>> Get([FromServices] IProductRepository repository, int id)
-        // {
-        //     return await repository.Get(id);
-        // }
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public async Task<ActionResult<ProdutoModel>> Get([FromServices] IProdutoRepository repository, [FromServices] IMapper mapper, Guid id)
+        {
+            return mapper.Map<ProdutoModel>(await repository.Get(id));
+        }
 
-        // [HttpPost]
-        // [Route("")]
-        // public async Task<ActionResult<ResultViewModel>> Post([FromServices] IProductRepository repository, [FromBody] EditorProductViewModel model)
-        // {
+        [HttpPost]
+        [Route("")]
+        public async Task<ActionResult<ResultViewModel>> Post([FromServices] IProdutoRepository repository, [FromServices] IMapper mapper, [FromBody] ProdutoModel model)
+        {
 
-        //     model.Validate();
-        //     if (model.Invalid)
-        //         return new ResultViewModel
-        //         {
-        //             Success = false,
-        //             Message = "Não foi possível inserir o produto",
-        //             Data = model.Notifications
-        //         };
+            var produto = mapper.Map<Produto>(model);
+            produto.Validate();
 
-        //     var product = new Product();
-        //     product.Title = model.Title;
-        //     product.CategoryId = model.CategoryId;
-        //     product.CreateDate = DateTime.Now;
-        //     product.Description = model.Description;
-        //     product.Image = model.Image;
-        //     product.LastUpdateDate = DateTime.Now;
-        //     product.Price = model.Price;
-        //     product.Quantity = model.Quantity;
+            if (produto.Invalid)
+                return new ResultViewModel
+                {
+                    Success = false,
+                    Message = "Não foi possível inserir o produto",
+                    Data = produto.Notifications
+                };
 
-        //     await repository.Save(product);
+            if (produto.Id != Guid.Empty && await repository.Get(produto.Id) != null)
+                return new ResultViewModel
+                {
+                    Success = false,
+                    Message = "Já existe um produto com esse ID",
+                    Data = null
+                };
 
-        //     return new ResultViewModel
-        //     {
-        //         Success = true,
-        //         Message = "Produto cadastrado com sucesso!",
-        //         Data = product
-        //     };
-        // }
+            produto.GeraID();
+            await repository.Save(produto);
 
-        // [HttpPut]
-        // [Route("")]
-        // public async Task<ActionResult<ResultViewModel>> Put([FromServices] IProductRepository repository, [FromBody] EditorProductViewModel model)
-        // {
+            return new ResultViewModel
+            {
+                Success = true,
+                Message = "Produto cadastrado com sucesso!",
+                Data = produto
+            };
+        }
 
-        //     model.Validate();
-        //     if (model.Invalid)
-        //         return new ResultViewModel
-        //         {
-        //             Success = false,
-        //             Message = "Não foi possível alterar o produto",
-        //             Data = model.Notifications
-        //         };
+        [HttpPut]
+        [Route("")]
+        public async Task<ActionResult<ResultViewModel>> Put([FromServices] IProdutoRepository repository, [FromServices] IMapper mapper, [FromBody] ProdutoModel model)
+        {
 
-        //     var product = await repository.Get(model.Id);
-        //     product.Title = model.Title;
-        //     product.CategoryId = model.CategoryId;
-        //     //product.CreateDate = DateTime.Now;
-        //     product.Description = model.Description;
-        //     product.Image = model.Image;
-        //     product.LastUpdateDate = DateTime.Now;
-        //     product.Price = model.Price;
-        //     product.Quantity = model.Quantity;
+            var produto = mapper.Map<Produto>(model);
+            produto.Validate();
 
-        //     await repository.Update(product);
+            if (produto.Invalid)
+                return new ResultViewModel
+                {
+                    Success = false,
+                    Message = "Não foi possível alterar o produto",
+                    Data = produto.Notifications
+                };
 
-        //     return new ResultViewModel
-        //     {
-        //         Success = true,
-        //         Message = "Produto alterado com sucesso!",
-        //         Data = product
-        //     };
-        // }
+            produto = await repository.Get(model.Id);
+            if (produto == null)
+                return new ResultViewModel
+                {
+                    Success = false,
+                    Message = "Produto não encontrado",
+                    Data = null
+                };
 
-        // [HttpDelete]
-        // [Route("")]
-        // public async Task<ActionResult<Product>> Delete([FromServices] IProductRepository repository, [FromBody] Product model)
-        // {
-        //     await repository.Delete(model);
-        //     return model;
-        // }
+            produto.AlterarNome(model.Nome);
+            produto.AlterarValor(model.Valor);
+            produto.AlterarImagem(model.Imagem);
+
+            await repository.Update(produto);
+
+            return new ResultViewModel
+            {
+                Success = true,
+                Message = "Produto alterado com sucesso!",
+                Data = produto
+            };
+        }
+
+        [HttpDelete]
+        [Route("")]
+        public async Task<ActionResult<ResultViewModel>> Delete([FromServices] IProdutoRepository repository, [FromBody] ProdutoModel model)
+        {
+            var produto = await repository.Get(model.Id);
+
+            if (produto == null)
+                return new ResultViewModel
+                {
+                    Success = false,
+                    Message = "Produto não encontrado",
+                    Data = null
+                };
+
+            await repository.Delete(produto);
+
+            return new ResultViewModel
+            {
+                Success = true,
+                Message = "Produto excluído com sucesso!",
+                Data = null
+            };
+        }
     }
 }

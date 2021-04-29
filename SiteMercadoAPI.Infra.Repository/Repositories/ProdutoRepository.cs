@@ -23,6 +23,7 @@ namespace SiteMercadoAPI.Infra.Repository.Repositories
         {
             return await _context.Produtos
             .AsNoTracking()
+            .OrderBy(x=> x.Nome)
             .ToListAsync();
         }
 

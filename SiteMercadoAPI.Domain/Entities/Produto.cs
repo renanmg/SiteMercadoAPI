@@ -13,10 +13,7 @@ namespace SiteMercadoAPI.Domain.Entities
         public decimal Valor { get; private set; }
         public string Imagem { get; private set; }
 
-        public Produto()
-        {
-            Id = Guid.NewGuid();
-        }
+        public Produto() { }
 
         public Produto(string nome, decimal valor, string imagem)
         {
@@ -39,13 +36,17 @@ namespace SiteMercadoAPI.Domain.Entities
         {
             Imagem = imagem;
         }
+        public void GeraID()
+        {
+            Id = Guid.NewGuid();
+        }
 
         public void Validate()
         {
             AddNotifications(
                 new Contract()
                 .IsNotNullOrEmpty(Nome, "Nome", "O nome deve ser preenchido")
-                .IsGreaterThan(Valor,0, "Valor", "O valor deve ser maior que zero")
+                .IsGreaterThan(Valor, 0, "Valor", "O valor deve ser maior que zero")
             );
         }
     }
