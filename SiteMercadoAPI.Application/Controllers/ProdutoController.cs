@@ -105,10 +105,10 @@ namespace SiteMercadoAPI.Application.Controllers
         }
 
         [HttpDelete]
-        [Route("")]
-        public async Task<ActionResult<ResultViewModel>> Delete([FromServices] IProdutoRepository repository, [FromBody] ProdutoModel model)
+        [Route("{id:Guid}")]
+        public async Task<ActionResult<ResultViewModel>> Delete([FromServices] IProdutoRepository repository, Guid id)
         {
-            var produto = await repository.Get(model.Id);
+            var produto = await repository.Get(id);
 
             if (produto == null)
                 return new ResultViewModel

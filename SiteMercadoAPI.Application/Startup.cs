@@ -19,7 +19,8 @@ namespace SiteMercadoAPI.Application
             services.AddScoped<DataContext, DataContext>();
             services.AddTransient<IProdutoRepository, ProdutoRepository>();
             services.AddAutoMapper(typeof(Startup));
-           
+            services.AddCors();
+
             services.AddSwaggerGen(c =>
            {
                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -40,6 +41,12 @@ namespace SiteMercadoAPI.Application
 
             app.UseHttpsRedirection();
             app.UseRouting();
+
+            app.UseCors(x => x
+               .AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+           );
 
             app.UseResponseCompression();
 
