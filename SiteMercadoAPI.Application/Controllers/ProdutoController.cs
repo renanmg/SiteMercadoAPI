@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.ViewModels;
 using SiteMercadoAPI.Application.Models;
@@ -32,7 +34,7 @@ namespace SiteMercadoAPI.Application.Controllers
 
         [HttpPost]
         [Route("")]
-        public async Task<ActionResult<ResultViewModel>> Post([FromServices] IProdutoRepository repository, [FromServices] IMapper mapper, [FromBody] ProdutoModel model)
+        public async Task<ActionResult<ResultViewModel>> Post([FromServices] IProdutoRepository repository, [FromServices] IMapper mapper, [FromForm] ProdutoModel model)
         {
 
             var produto = mapper.Map<Produto>(model);
@@ -54,7 +56,21 @@ namespace SiteMercadoAPI.Application.Controllers
                     Data = null
                 };
 
+            var fileID = Guid.NewGuid() + "_";
+
+            if (!await UploadFile(model.ImagemArquivo, fileID))
+            {
+                return new ResultViewModel
+                {
+                    Success = false,
+                    Message = "Ocorreu um problema ao salvar a imagem",
+                    Data = null
+                };
+            }
+
+            produto.AlterarImagem(fileID + model.ImagemArquivo.FileName);
             produto.GeraID();
+
             await repository.Save(produto);
 
             return new ResultViewModel
@@ -67,7 +83,7 @@ namespace SiteMercadoAPI.Application.Controllers
 
         [HttpPut]
         [Route("")]
-        public async Task<ActionResult<ResultViewModel>> Put([FromServices] IProdutoRepository repository, [FromServices] IMapper mapper, [FromBody] ProdutoModel model)
+        public async Task<ActionResult<ResultViewModel>> Put([FromServices] IProdutoRepository repository, [FromServices] IMapper mapper, [FromForm] ProdutoModel model)
         {
 
             var produto = mapper.Map<Produto>(model);
@@ -90,9 +106,23 @@ namespace SiteMercadoAPI.Application.Controllers
                     Data = null
                 };
 
+            if (model.ImagemArquivo != null)
+            {
+                var fileID = Guid.NewGuid() + "_";
+                if (!await UploadFile(model.ImagemArquivo, fileID))
+                {
+                    return new ResultViewModel
+                    {
+                        Success = false,
+                        Message = "Ocorreu um problema ao salvar a imagem",
+                        Data = null
+                    };
+                }
+                produto.AlterarImagem(fileID + model.ImagemArquivo.FileName);
+            }
+
             produto.AlterarNome(model.Nome);
             produto.AlterarValor(model.Valor);
-            produto.AlterarImagem(model.Imagem);
 
             await repository.Update(produto);
 
@@ -126,6 +156,32 @@ namespace SiteMercadoAPI.Application.Controllers
                 Message = "Produto excluído com sucesso!",
                 Data = null
             };
+        }
+        private async Task<bool> UploadFile(IFormFile file, string fileID)
+        {
+            if (file.Length <= 0) return false;
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "Images", fileID + file.FileName);
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return true;
+        }
+
+        private bool CheckImageExists(string path)
+        {
+
+            if (System.IO.File.Exists(path))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

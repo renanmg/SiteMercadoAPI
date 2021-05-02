@@ -72,3 +72,4 @@ D:\Educação\SiteMercado\SiteMercadoAPI\SiteMercadoAPI.Application\bin\Debug\ne
 D:\Educação\SiteMercado\SiteMercadoAPI\SiteMercadoAPI.Application\bin\Debug\net5.0\SiteMercadoAPI.Infra.Repository.pdb
 D:\Educação\SiteMercado\SiteMercadoAPI\SiteMercadoAPI.Application\bin\Debug\net5.0\SiteMercadoAPI.Domain.pdb
 D:\Educação\SiteMercado\SiteMercadoAPI\SiteMercadoAPI.Application\obj\Debug\net5.0\SiteMercadoAPI.Application.MvcApplicationPartsAssemblyInfo.cs
+D:\Educação\SiteMercado\SiteMercadoAPI\SiteMercadoAPI.Application\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll

@@ -1,4 +1,5 @@
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace SiteMercadoAPI.Application.Models
 {
@@ -6,8 +7,9 @@ namespace SiteMercadoAPI.Application.Models
     {
         public Guid Id { get; set; }
         public string Nome { get; set; }
-        public decimal Valor { get; set; }   
+        public decimal Valor { get; set; }
         public string Imagem { get; set; }
-        
+        public IFormFile ImagemArquivo { get; set; }
+
     }
 }
